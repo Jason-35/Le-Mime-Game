@@ -23,6 +23,7 @@ import Layer from "../../Wolfie2D/Scene/Layer";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import AbilityHud from "../Actors/AbilityHUD";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class level1 extends Scene {
   /** All the battlers in the HW4Scene (including the player) */
@@ -38,7 +39,7 @@ export default class level1 extends Scene {
 
   private mimeWall: Graphic;
   private AbilityLayer: Layer;
-  private al: Sprite;
+  private al: AnimatedSprite;
 
   public constructor(
     viewport: Viewport,
@@ -78,7 +79,7 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(5);
+    this.viewport.setZoomLevel(3);
 
     this.initLayer();
     this.initializePlayer();
@@ -94,7 +95,18 @@ export default class level1 extends Scene {
     while (this.receiver.hasNextEvent()) {
       this.handleEvent(this.receiver.getNextEvent());
     }
-
+    this.al.position.set(
+      this.viewport.getCenter().x - 200,
+      this.viewport.getCenter().y - 100
+    );
+    
+    if (Input.isKeyPressed("1")){
+      this.al.animation.play("ABILITY1");
+    } else if (Input.isKeyPressed("2")){
+    this.al.animation.play("ABILITY2");
+    }else if (Input.isKeyPressed("3")){
+      this.al.animation.play("ABILITY3");
+      }
     // console.log(this.guard.positionX);
     //this.guard._velocity.x += 10;
   }
