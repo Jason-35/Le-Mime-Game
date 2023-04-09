@@ -27,8 +27,6 @@ export default class PlayerState extends State {
   }
 
   public override update(deltaT: number): void {
-    // Adjust the angle the player is facing
-    this.parent.owner.rotation = this.parent.controller.rotation;
     // Move the player
     this.parent.owner.move(this.parent.controller.moveDir);
   }

@@ -32,21 +32,4 @@ export default class PlayerController {
     return dir.normalize();
   }
 
-  /**
-   * Gets the direction the player should be facing based on the position of the
-   * mouse around the player
-   * @return a Vec2 representing the direction the player should face.
-   */
-  public get faceDir(): Vec2 {
-    return this.owner.position.dirTo(Input.getGlobalMousePosition());
-  }
-
-  /**
-   * Gets the rotation of the players sprite based on the direction the player
-   * should be facing.
-   * @return a number representing how much the player should be rotated
-   */
-  public get rotation(): number {
-    return Vec2.UP.angleToCCW(this.faceDir);
-  }
 }

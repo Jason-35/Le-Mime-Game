@@ -41,7 +41,7 @@ export default class level1 extends Scene {
    * @see Scene.update()
    */
   public override loadScene() {
-    this.load.spritesheet("player1", "hw4_assets/spritesheets/player1.json");
+    this.load.spritesheet("player1", "project_assets/spritesheets/mime.json");
     this.load.tilemap("level", "hw4_assets/tilemaps/cretin.json");
   }
   /**
@@ -56,7 +56,7 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(3);
+    this.viewport.setZoomLevel(4);
 
     this.initLayer();
     this.initializePlayer();
@@ -79,10 +79,11 @@ export default class level1 extends Scene {
   public initLayer() {
     this.addLayer("primary", 10);
   }
+
   public initializePlayer() {
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
     player.position.set(40, 40);
-    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(10, 10)));
 
     player.addAI(PlayerAI);
     player.animation.play("IDLE");

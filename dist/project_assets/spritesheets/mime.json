@@ -1,0 +1,15 @@
+{
+    "name": "BlueEnemy",
+    "spriteSheetImage": "mime.png",
+    "spriteWidth": 17,
+    "spriteHeight": 26,
+    "columns": 1,
+    "rows": 1,
+    "durationType": "time",
+    "animations": [
+        { 
+            "name": "IDLE",
+            "frames": [ {"index": 0, "duration": 1} ]
+        }
+    ]
+}
