@@ -99,7 +99,7 @@ export default class PlayerState extends State {
       }
       
     }  else {
-      if (!(this.parent.owner.animation.currentAnimation.includes("WHIP") || this.parent.owner.animation.currentAnimation.includes("BARRIER"))) {
+      if (!(this.parent.owner.animation.currentAnimation.includes("WHIP") || this.parent.owner.animation.currentAnimation.includes("BARRIER") || this.parent.owner.animation.currentAnimation.includes("CAMO"))) {
         this.parent.owner.animation.play([PlayerAnimationType.IDLE_LEFT,PlayerAnimationType.IDLE_UP,PlayerAnimationType.IDLE_RIGHT,PlayerAnimationType.IDLE_DOWN][this.currentDirection]);
         }
     }

@@ -19,6 +19,10 @@ import PlayerAI from "../AI/Player/PlayerAI";
 import GuardActor from "../Actors/GuardActor";
 import PlayerActor from "../Actors/PlayerActor";
 import Graphic from "../../Wolfie2D/Nodes/Graphic";
+import Layer from "../../Wolfie2D/Scene/Layer";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import AbilityHud from "../Actors/AbilityHUD";
 
 export default class level1 extends Scene {
   /** All the battlers in the HW4Scene (including the player) */
@@ -33,6 +37,8 @@ export default class level1 extends Scene {
   private guard: GuardActor;
 
   private mimeWall: Graphic;
+  private AbilityLayer: Layer;
+  private al: Sprite;
 
   public constructor(
     viewport: Viewport,
@@ -55,6 +61,10 @@ export default class level1 extends Scene {
       "project_assets/spritesheets/treasure.json"
     );
     this.load.tilemap("level", "project_assets/tilesheets/test128.json");
+    this.load.spritesheet(
+      "Ability_HUD",
+      "project_assets/spritesheets/abilityHUD.json"
+    );
   }
   /**
    * @see Scene.startScene
@@ -75,6 +85,7 @@ export default class level1 extends Scene {
     this.initializeGuards();
     this.initializeTreasure();
     this.initializeMimeWalls();
+    this.initializeAbilityHUD();
   }
   /**
    * @see Scene.updateScene
@@ -96,6 +107,21 @@ export default class level1 extends Scene {
 
   public initLayer() {
     this.addLayer("primary", 10);
+  }
+
+  public initializeAbilityHUD() {
+    const center = this.viewport.getCenter();
+    this.AbilityLayer = this.addLayer("abilitylayer", 11);
+    this.AbilityLayer.setHidden(false);
+    this.al = this.add.animatedSprite(
+      AbilityHud,
+      "Ability_HUD",
+      "abilitylayer"
+    );
+    this.al.scale.set(2, 2);
+    this.al.position.set(this.player.position.x, this.player.position.y);
+    // this.al.position.toFixed;
+    // console.log(this.player.position.x)
   }
 
   public initializePlayer() {
