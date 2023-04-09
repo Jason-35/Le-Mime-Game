@@ -44,7 +44,7 @@ export default class level1 extends Scene {
    * @see Scene.update()
    */
   public override loadScene() {
-    this.load.spritesheet("player1", "project_assets/spritesheets/mime2.json");
+    this.load.spritesheet("player1", "project_assets/spritesheets/mime.json");
     this.load.spritesheet("guard", "project_assets/spritesheets/guards.json");
     this.load.tilemap("level", "project_assets/tilesheets/test128.json");
     this.load.spritesheet(
@@ -65,7 +65,7 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(1);
+    this.viewport.setZoomLevel(5);
 
     this.initLayer();
     this.initializePlayer();
@@ -107,7 +107,7 @@ export default class level1 extends Scene {
   public initializeGuards() {
     let guard1 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard1.position.set(350, 675);
-    guard1.scale.set(0.5, 0.5);
+    guard1.scale.set(0.75, 0.75);
     guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     guard1.addAI(GuardAI);
     guard1.animation.play("IDLE");
@@ -115,7 +115,7 @@ export default class level1 extends Scene {
 
     let guard2 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard2.position.set(675, 275);
-    guard2.scale.set(0.5, 0.5);
+    guard2.scale.set(0.75, 0.75);
     guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     guard2.addAI(GuardAI);
     guard2.animation.play("IDLE");
