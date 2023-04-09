@@ -23,30 +23,15 @@ export default class PlayerController {
    */
   public get moveDir(): Vec2 {
     let dir: Vec2 = Vec2.ZERO;
-    dir.y =
-      (Input.isPressed(PlayerInput.MOVE_UP) ? -1 : 0) +
-      (Input.isPressed(PlayerInput.MOVE_DOWN) ? 1 : 0);
-    dir.x =
-      (Input.isPressed(PlayerInput.MOVE_LEFT) ? -1 : 0) +
-      (Input.isPressed(PlayerInput.MOVE_RIGHT) ? 1 : 0);
+    if (Input.isPressed(PlayerInput.MOVE_DOWN)) {
+      dir.y = 1;
+    } else if (Input.isPressed(PlayerInput.MOVE_UP)) {
+      dir.y = -1;
+    } else if (Input.isPressed(PlayerInput.MOVE_LEFT)) {
+      dir.x = -1;
+    } else if (Input.isPressed(PlayerInput.MOVE_RIGHT)) {
+      dir.x = 1;
+    }
     return dir.normalize();
-  }
-
-  /**
-   * Gets the direction the player should be facing based on the position of the
-   * mouse around the player
-   * @return a Vec2 representing the direction the player should face.
-   */
-  public get faceDir(): Vec2 {
-    return this.owner.position.dirTo(Input.getGlobalMousePosition());
-  }
-
-  /**
-   * Gets the rotation of the players sprite based on the direction the player
-   * should be facing.
-   * @return a number representing how much the player should be rotated
-   */
-  public get rotation(): number {
-    return Vec2.UP.angleToCCW(this.faceDir);
   }
 }

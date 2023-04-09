@@ -340,12 +340,6 @@ export default class MainMenu extends Scene {
         break;
       }
       case "level1": {
-        // this.mainMenu.setHidden(true);
-        // this.logoLayer.setHidden(true);
-        // this.help.setHidden(true);
-        // this.helpLayer.setHidden(true);
-        // this.controlLayer.setHidden(true);
-        // this.controls.setHidden(true);
         this.sceneManager.changeToScene(level1);
         break;
       }

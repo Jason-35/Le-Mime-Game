@@ -16,6 +16,19 @@ export default class Moving extends PlayerState {
 
   public override update(deltaT: number): void {
     super.update(deltaT);
+
+    if (this.parent.controller.moveDir.y < 0) {
+      this.finished(PlayerStateType.MOVING_UP);
+    }
+    if (this.parent.controller.moveDir.x > 0) {
+      this.finished(PlayerStateType.MOVING_RIGHT);
+    }
+    if (this.parent.controller.moveDir.y > 0) {
+      this.finished(PlayerStateType.MOVING_DOWN);
+    }
+    if (this.parent.controller.moveDir.x < 0) {
+      this.finished(PlayerStateType.MOVING_LEFT);
+    }
     if (this.parent.controller.moveDir.equals(Vec2.ZERO)) {
       this.finished(PlayerStateType.IDLE);
     }
