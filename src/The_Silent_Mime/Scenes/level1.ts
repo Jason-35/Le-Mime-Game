@@ -44,7 +44,8 @@ export default class level1 extends Scene {
    * @see Scene.update()
    */
   public override loadScene() {
-    this.load.spritesheet("player1", "project_assets/spritesheets/guards.json");
+    this.load.spritesheet("player1", "project_assets/spritesheets/mime2.json");
+    this.load.spritesheet("guard", "project_assets/spritesheets/guards.json");
     this.load.tilemap("level", "project_assets/tilesheets/test128.json");
     this.load.spritesheet(
       "treasure",
@@ -102,7 +103,7 @@ export default class level1 extends Scene {
     this.viewport.follow(player);
   }
   public initializeGuards() {
-    let guard1 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    let guard1 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard1.position.set(525, 675);
     guard1.scale.set(0.5, 0.5);
     guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)));
@@ -110,7 +111,7 @@ export default class level1 extends Scene {
     guard1.animation.play("IDLE");
     this.guard = guard1;
 
-    let guard2 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    let guard2 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard2.position.set(525, 275);
     guard2.scale.set(0.5, 0.5);
     guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
