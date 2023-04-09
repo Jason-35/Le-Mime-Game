@@ -14,7 +14,9 @@ import Scene from "../../Wolfie2D/Scene/Scene";
 import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import MathUtils from "../../Wolfie2D/Utils/MathUtils";
+import GuardAI from "../AI/Guard/GuardAI";
 import PlayerAI from "../AI/Player/PlayerAI";
+import GuardActor from "../Actors/GuardActor";
 import PlayerActor from "../Actors/PlayerActor";
 
 export default class level1 extends Scene {
@@ -27,6 +29,7 @@ export default class level1 extends Scene {
   private player: PlayerActor;
   // The position graph for the navmesh
   private graph: PositionGraph;
+  private guard: GuardActor;
 
   public constructor(
     viewport: Viewport,
@@ -42,7 +45,11 @@ export default class level1 extends Scene {
    */
   public override loadScene() {
     this.load.spritesheet("player1", "project_assets/spritesheets/mime.json");
-    this.load.tilemap("level", "hw4_assets/tilemaps/cretin.json");
+    this.load.tilemap("level", "project_assets/tilesheets/test128.json");
+    this.load.spritesheet(
+      "treasure",
+      "project_assets/spritesheets/treasure.json"
+    );
   }
   /**
    * @see Scene.startScene
@@ -56,10 +63,12 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(4);
+    this.viewport.setZoomLevel(5);
 
     this.initLayer();
     this.initializePlayer();
+    this.initializeGuards();
+    this.initializeTreasure();
   }
   /**
    * @see Scene.updateScene
@@ -68,6 +77,9 @@ export default class level1 extends Scene {
     while (this.receiver.hasNextEvent()) {
       this.handleEvent(this.receiver.getNextEvent());
     }
+
+    // console.log(this.guard.positionX);
+    this.guard._velocity.x += 10;
   }
 
   /**
@@ -82,12 +94,35 @@ export default class level1 extends Scene {
 
   public initializePlayer() {
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-    player.position.set(40, 40);
-    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 6)));
-
+    player.position.set(170, 120);
+    player.scale.set(0.5, 0.5);
+    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
     player.addAI(PlayerAI);
     player.animation.play("IDLE");
     this.player = player;
     this.viewport.follow(player);
+  }
+  public initializeGuards() {
+    let guard1 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    guard1.position.set(525, 675);
+    guard1.scale.set(0.5, 0.5);
+    guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)));
+    guard1.addAI(GuardAI);
+    guard1.animation.play("IDLE");
+    this.guard = guard1;
+
+    let guard2 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    guard2.position.set(525, 275);
+    guard2.scale.set(0.5, 0.5);
+    guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
+    // guard2.addAI(PlayerAI);
+    guard2.animation.play("IDLE");
+  }
+
+  public initializeTreasure() {
+    let treasure = this.add.animatedSprite(GuardActor, "treasure", "primary");
+    treasure.position.set(525, 475);
+    treasure.scale.set(0.75, 0.75);
+    treasure.animation.play("SPIN");
   }
 }
