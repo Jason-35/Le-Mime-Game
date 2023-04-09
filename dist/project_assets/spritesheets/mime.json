@@ -1,8 +1,8 @@
 {
     "name": "BlueEnemy",
     "spriteSheetImage": "mime.png",
-    "spriteWidth": 17,
-    "spriteHeight": 26,
+    "spriteWidth": 18,
+    "spriteHeight": 10,
     "columns": 1,
     "rows": 1,
     "durationType": "time",

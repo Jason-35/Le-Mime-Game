@@ -83,7 +83,7 @@ export default class level1 extends Scene {
   public initializePlayer() {
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
     player.position.set(40, 40);
-    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(10, 10)));
+    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 6)));
 
     player.addAI(PlayerAI);
     player.animation.play("IDLE");
