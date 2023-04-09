@@ -5,7 +5,7 @@ import PlayerAI from "../PlayerAI";
 
 export enum PlayerStateType {
   IDLE = "IDLE",
-  Moving = "MOVING",
+  MOVING = "MOVING",
   MOVING_LEFT = "MOVING_LEFT",
   MOVING_UP = "MOVING_UP",
   MOVING_DOWN = "MOVING_DOWN",
@@ -17,7 +17,7 @@ export enum PlayerStateType {
 }
 
 export enum PlayerAnimationType {
-  IDLE = "IDLE",
+  // IDLE = "IDLE_DOWN",
   IDLE_LEFT = "IDLE_LEFT",
   IDLE_RIGHT = "IDLE_RIGHT",
   IDLE_UP = "IDLE_UP",
@@ -31,7 +31,6 @@ export enum PlayerAnimationType {
 export default class PlayerState extends State {
   protected parent: PlayerAI;
   protected owner: PlayerActor;
-  public facing: String;
 
   public constructor(parent: PlayerAI, owner: PlayerActor) {
     super(parent);
@@ -60,25 +59,26 @@ export default class PlayerState extends State {
 
 import Idle from "./Idle";
 import Moving from "./Moving";
-// import Moving_Left from "./PlayerMove/Moving_Left";
-// import Moving_Right from "./PlayerMove/Moving_Right";
-// import Moving_Up from "./PlayerMove/Moving_Up";
-// import Moving_Down from "./PlayerMove/Moving_Down";
-// import IdleDown from "./PlayerIdle/IdleDown";
-// import IdleLeft from "./PlayerIdle/IdleLeft";
-// import IdleRight from "./PlayerIdle/IdleRight";
-// import IdleUp from "./PlayerIdle/IdleUp";
+import Moving_Left from "./PlayerMove/Moving_Left";
+import Moving_Right from "./PlayerMove/Moving_Right";
+import Moving_Up from "./PlayerMove/Moving_Up";
+import Moving_Down from "./PlayerMove/Moving_Down";
+import IdleDown from "./PlayerIdle/IdleDown";
+import IdleLeft from "./PlayerIdle/IdleLeft";
+import IdleRight from "./PlayerIdle/IdleRight";
+import IdleUp from "./PlayerIdle/IdleUp";
 
 import PlayerActor from "../../../Actors/PlayerActor";
+
 export {
   Idle,
-  Moving
-  // Moving_Down,
-  // Moving_Right,
-  // Moving_Left,
-  // Moving_Up,
-  // IdleDown,
-  // IdleLeft,
-  // IdleRight,
-  // IdleUp,
+  Moving,
+  Moving_Down,
+  Moving_Right,
+  Moving_Left,
+  Moving_Up,
+  IdleDown,
+  IdleLeft,
+  IdleRight,
+  IdleUp,
 };
