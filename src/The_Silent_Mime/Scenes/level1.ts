@@ -18,6 +18,7 @@ import GuardAI from "../AI/Guard/GuardAI";
 import PlayerAI from "../AI/Player/PlayerAI";
 import GuardActor from "../Actors/GuardActor";
 import PlayerActor from "../Actors/PlayerActor";
+import Graphic from "../../Wolfie2D/Nodes/Graphic";
 
 export default class level1 extends Scene {
   /** All the battlers in the HW4Scene (including the player) */
@@ -30,6 +31,8 @@ export default class level1 extends Scene {
   // The position graph for the navmesh
   private graph: PositionGraph;
   private guard: GuardActor;
+
+  private mimeWall: Graphic;
 
   public constructor(
     viewport: Viewport,
@@ -71,6 +74,7 @@ export default class level1 extends Scene {
     this.initializePlayer();
     this.initializeGuards();
     this.initializeTreasure();
+    this.initializeMimeWalls();
   }
   /**
    * @see Scene.updateScene
@@ -126,5 +130,9 @@ export default class level1 extends Scene {
     treasure.position.set(525, 475);
     treasure.scale.set(0.45, 0.45);
     treasure.animation.play("SPIN");
+  }
+
+  public initializeMimeWalls() {
+    return;
   }
 }

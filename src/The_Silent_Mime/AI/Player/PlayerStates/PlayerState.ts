@@ -32,9 +32,14 @@ export default class PlayerState extends State {
   protected parent: PlayerAI;
   protected owner: PlayerActor;
 
+  pressedAbilityKey: Boolean;
+  currentAbility: Number;
+
   public constructor(parent: PlayerAI, owner: PlayerActor) {
     super(parent);
     this.owner = owner;
+    this.pressedAbilityKey = false;
+    this.currentAbility = 1;
   }
 
   public override onEnter(options: Record<string, any>): void {}
@@ -45,7 +50,10 @@ export default class PlayerState extends State {
   public override update(deltaT: number): void {
     // Move the player
     this.parent.owner.move(this.parent.controller.moveDir);
+
+    this.handleAbilityInput();
   }
+
   public override handleInput(event: GameEvent): void {
     switch (event.type) {
       default: {
@@ -53,6 +61,27 @@ export default class PlayerState extends State {
           `Unhandled event of type ${event.type} caught in PlayerState!`
         );
       }
+    }
+  }
+
+  private handleAbilityInput() {
+    this.currentAbility = (this.parent.controller.currentAbility == -1) ? this.currentAbility :this.parent.controller.currentAbility;
+
+    if (!this.parent.controller.abilityKey)
+      this.pressedAbilityKey = false;
+    
+    if (this.parent.controller.abilityKey && !this.pressedAbilityKey){
+      this.pressedAbilityKey = true;
+      this.executeAbility();
+    }
+  }
+
+  private executeAbility() {
+    //this.owner.animation.play(PlayerAnimationType.MOVING_UP,false);
+    if (this.currentAbility == 1) {
+      this.owner.animation.play(PlayerAnimationType.MOVING_DOWN,false);
+    } else if (this.currentAbility == 2){
+      this.owner.animation.play(PlayerAnimationType.MOVING_LEFT,false);
     }
   }
 }
