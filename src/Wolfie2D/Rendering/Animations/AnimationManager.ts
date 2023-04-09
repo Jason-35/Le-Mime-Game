@@ -17,7 +17,7 @@ export default class AnimationManager {
     protected animationState: AnimationState;
 
     /** The name of the current animation of this sprite */
-    protected currentAnimation: string;
+    public currentAnimation: string;
 
     /** The current frame of this animation */
     protected currentFrame: number;

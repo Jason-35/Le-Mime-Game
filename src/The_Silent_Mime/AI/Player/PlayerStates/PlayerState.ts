@@ -52,14 +52,15 @@ export default class PlayerState extends State {
   protected owner: PlayerActor;
 
   pressedAbilityKey: Boolean;
-  currentAbility: Number;
+  activeAbility: Number;
   currentDirection: Number;
 
   public constructor(parent: PlayerAI, owner: PlayerActor) {
     super(parent);
     this.owner = owner;
     this.pressedAbilityKey = false;
-    this.currentAbility = 1;
+    this.activeAbility = 1;
+    console.log("constuctor set");
     this.currentDirection = DIRECTIONS.DOWN;
   }
 
@@ -77,22 +78,32 @@ export default class PlayerState extends State {
     if (!(direction.x == 0 && direction.y == 0)) {
       if (direction.x  == -1){
         this.currentDirection = DIRECTIONS.LEFT;
-        console.log("set left");
+        this.parent.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_LEFT);
+
+        //console.log("set left");
       }
       else if (direction.x == 1) {
         this.currentDirection = DIRECTIONS.RIGHT;
-        console.log("set right");
+        //console.log("set right");
+        this.parent.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_RIGHT);
+
       }
       else if (direction.y == 1) {
         this.currentDirection = DIRECTIONS.DOWN;
-        console.log("set down")
+        this.parent.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_DOWN);
+        //console.log("set down")
       } else if (direction.y == -1) {
         this.currentDirection = DIRECTIONS.UP;
-        console.log("set up");
+        this.parent.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_UP);
+       //console.log("set up");
       }
       
-    } 
-    console.log("curr dir: ",this.currentDirection);
+    }  else {
+      if (!(this.parent.owner.animation.currentAnimation.includes("WHIP") || this.parent.owner.animation.currentAnimation.includes("BARRIER"))) {
+        this.parent.owner.animation.play([PlayerAnimationType.IDLE_LEFT,PlayerAnimationType.IDLE_UP,PlayerAnimationType.IDLE_RIGHT,PlayerAnimationType.IDLE_DOWN][this.currentDirection]);
+        }
+    }
+    //console.log("curr dir: ",this.currentDirection);
     this.handleAbilityInput();
   }
 
@@ -107,8 +118,12 @@ export default class PlayerState extends State {
   }
 
   private handleAbilityInput() {
-    this.currentAbility = (this.parent.controller.currentAbility == -1) ? this.currentAbility :this.parent.controller.currentAbility;
-
+    if (this.parent.controller.currentAbility != -1) {
+      this.activeAbility = this.parent.controller.currentAbility;
+      console.log("updated current ability");
+    }
+    console.log("current ability",this.activeAbility)
+   // console.log(this.currentAbility,this.parent.controller.currentAbility);
     if (!this.parent.controller.abilityKey)
       this.pressedAbilityKey = false;
     
@@ -119,15 +134,34 @@ export default class PlayerState extends State {
   }
 
   private executeAbility() {
-    //this.owner.animation.play(PlayerAnimationType.MOVING_UP,false);
-    console.log("dir:",this.currentDirection," ability:",this.currentAbility);
-    this.owner.animation.play(PlayerAnimationType.WHIP_UP,false);
-    
-    /*if (this.currentAbility == 1) {
+    console.log(this.owner.animation.currentAnimation);
+    var index = 0;
+    var currentAnimation = this.owner.animation.currentAnimation;
+    if (currentAnimation.includes("LEFT")) {
+      index = 0;
+      //console.log("set indcex to 0, includes left")
+    } else if (currentAnimation.includes("UP")) {
+      index = 1;
+      //console.log("set indcex to 1, includes up",currentAnimation.includes("UP"),currentAnimation);
+    }else if (currentAnimation.includes("RIGHT")) {
+      index = 2;
+      //console.log("set indcex to 2, includes right")
+    }else if (currentAnimation.includes("DOWN")) {
+      index = 3;
+      //console.log("set indcex to 3, includes down")
+    }
+
+    console.log(this.activeAbility);
+    if (this.activeAbility == 1) {
       this.owner.animation.play([PlayerAnimationType.BARRIER_LEFT,PlayerAnimationType.BARRIER_UP,PlayerAnimationType.BARRIER_RIGHT,PlayerAnimationType.BARRIER_DOWN][this.currentDirection],false);
-    } else if (this.currentAbility == 2){
-      this.owner.animation.play([PlayerAnimationType.WHIP_LEFT,PlayerAnimationType.WHIP_UP,PlayerAnimationType.WHIP_DOWN,PlayerAnimationType.WHIP_RIGHT][this.currentDirection],false);
-    }*/
+      this.owner.animation.queue([PlayerAnimationType.IDLE_LEFT,PlayerAnimationType.IDLE_UP,PlayerAnimationType.IDLE_RIGHT,PlayerAnimationType.IDLE_DOWN][this.currentDirection],false);
+    } else if (this.activeAbility == 2){
+      this.owner.animation.play([PlayerAnimationType.WHIP_LEFT,PlayerAnimationType.WHIP_UP,PlayerAnimationType.WHIP_RIGHT,PlayerAnimationType.WHIP_DOWN][this.currentDirection],false);
+      this.owner.animation.queue([PlayerAnimationType.IDLE_LEFT,PlayerAnimationType.IDLE_UP,PlayerAnimationType.IDLE_RIGHT,PlayerAnimationType.IDLE_DOWN][this.currentDirection],false);
+    }else if (this.activeAbility == 3){
+      this.owner.animation.play(PlayerAnimationType.CAMO,false);
+      this.owner.animation.queue([PlayerAnimationType.IDLE_LEFT,PlayerAnimationType.IDLE_UP,PlayerAnimationType.IDLE_RIGHT,PlayerAnimationType.IDLE_DOWN][this.currentDirection],false);
+    }
   }
 }
 

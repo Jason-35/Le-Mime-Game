@@ -2,7 +2,7 @@ import StateMachineAI from "../../../Wolfie2D/AI/StateMachineAI";
 import AI from "../../../Wolfie2D/DataTypes/Interfaces/AI";
 import PlayerActor from "../../Actors/PlayerActor";
 import PlayerController from "./PlayerController";
-import {
+import PlayerState, {
   Idle,
   Moving,
   PlayerStateType,
@@ -26,8 +26,8 @@ export default class PlayerAI extends StateMachineAI implements AI {
     this.controller = new PlayerController(owner);
 
     // Add the players states to it's StateMachine
-    this.addState(PlayerStateType.IDLE, new Idle(this, this.owner));
-    this.addState(PlayerStateType.MOVING, new Moving(this, this.owner));
+    this.addState(PlayerStateType.IDLE, new PlayerState(this, this.owner));
+    /*this.addState(PlayerStateType.MOVING, new Moving(this, this.owner));
     this.addState(
       PlayerStateType.MOVING_DOWN,
       new Moving_Down(this, this.owner)
@@ -45,7 +45,7 @@ export default class PlayerAI extends StateMachineAI implements AI {
     this.addState(PlayerStateType.IDLE_DOWN, new IdleDown(this, this.owner));
     this.addState(PlayerStateType.IDLE_LEFT, new IdleLeft(this, this.owner));
     this.addState(PlayerStateType.IDLE_RIGHT, new IdleRight(this, this.owner));
-    this.addState(PlayerStateType.IDLE_UP, new IdleUp(this, this.owner));
+    this.addState(PlayerStateType.IDLE_UP, new IdleUp(this, this.owner));*/
 
     // Initialize the players state to Idle
     this.initialize(PlayerStateType.IDLE);
