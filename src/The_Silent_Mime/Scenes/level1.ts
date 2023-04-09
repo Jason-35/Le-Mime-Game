@@ -68,7 +68,7 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(1);
+    this.viewport.setZoomLevel(5);
 
     this.initLayer();
     this.initializePlayer();
