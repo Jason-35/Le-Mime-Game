@@ -46,6 +46,7 @@ export default class level1 extends Scene {
   public override loadScene() {
     this.load.spritesheet("player1", "project_assets/spritesheets/mime2.json");
     this.load.spritesheet("guard", "project_assets/spritesheets/guards.json");
+    this.load.tilemap("level", "project_assets/tilesheets/test128.json");
     this.load.spritesheet(
       "treasure",
       "project_assets/spritesheets/treasure.json"
