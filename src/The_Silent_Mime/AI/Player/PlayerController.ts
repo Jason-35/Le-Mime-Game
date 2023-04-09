@@ -7,6 +7,12 @@ export enum PlayerInput {
   MOVE_DOWN = "MOVE_DOWN",
   MOVE_LEFT = "MOVE_LEFT",
   MOVE_RIGHT = "MOVE_RIGHT",
+
+  USE_ABILITY = "USE_ABILITY",
+  SET_ABILITY_1 = "SET_ABILITY_1",
+  SET_ABILITY_2 = "SET_ABILITY_2",
+  SET_ABILITY_3 = "SET_ABILITY_3",
+  SET_ABILITY_4 = "SET_ABILITY_4"
 }
 
 export default class PlayerController {
@@ -33,5 +39,21 @@ export default class PlayerController {
       dir.x = 1;
     }
     return dir.normalize();
+  }
+
+  public get abilityKey(): Boolean {
+    return Input.isPressed(PlayerInput.USE_ABILITY);
+  }
+
+  public get currentAbility(): Number {
+    if (Input.isPressed(PlayerInput.SET_ABILITY_1))
+      return 1;
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_2))
+      return 2;
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_3))
+      return 3
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_4))
+      return 4;
+    return -1;
   }
 }

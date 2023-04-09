@@ -28,13 +28,27 @@ export enum PlayerAnimationType {
   MOVING_RIGHT = "MOVING_RIGHT",
 }
 
+enum DIRECTIONS {
+  LEFT = 0,
+  UP = 1,
+  DOWN = 2,
+  RIGHT = 3
+}
+
 export default class PlayerState extends State {
   protected parent: PlayerAI;
   protected owner: PlayerActor;
 
+  pressedAbilityKey: Boolean;
+  currentAbility: Number;
+  currentDirection: Number;
+
   public constructor(parent: PlayerAI, owner: PlayerActor) {
     super(parent);
     this.owner = owner;
+    this.pressedAbilityKey = false;
+    this.currentAbility = 1;
+    this.currentDirection = DIRECTIONS.DOWN;
   }
 
   public override onEnter(options: Record<string, any>): void {}
@@ -44,8 +58,24 @@ export default class PlayerState extends State {
 
   public override update(deltaT: number): void {
     // Move the player
-    this.parent.owner.move(this.parent.controller.moveDir);
+    let direction =this.parent.controller.moveDir;
+    this.parent.owner.move(direction);
+    
+    if (direction.mag() != 0) {
+      if (direction.x  == -1)
+        this.currentDirection = DIRECTIONS.LEFT;
+      else if (direction.x == 1) 
+        this.currentDirection = DIRECTIONS.RIGHT;
+      else if (direction.y == 1) {
+        this.currentDirection = DIRECTIONS.DOWN;
+      } else if (direction.y == -1) {
+        this.currentDirection = DIRECTIONS.UP;
+      }
+      console.log("current direction is", this.currentDirection);
+    }
+    this.handleAbilityInput();
   }
+
   public override handleInput(event: GameEvent): void {
     switch (event.type) {
       default: {
@@ -53,6 +83,28 @@ export default class PlayerState extends State {
           `Unhandled event of type ${event.type} caught in PlayerState!`
         );
       }
+    }
+  }
+
+  private handleAbilityInput() {
+    this.currentAbility = (this.parent.controller.currentAbility == -1) ? this.currentAbility :this.parent.controller.currentAbility;
+
+    if (!this.parent.controller.abilityKey)
+      this.pressedAbilityKey = false;
+    
+    if (this.parent.controller.abilityKey && !this.pressedAbilityKey){
+      this.pressedAbilityKey = true;
+      this.executeAbility();
+    }
+  }
+
+  private executeAbility() {
+    //this.owner.animation.play(PlayerAnimationType.MOVING_UP,false);
+    console.log("current direction is",this.currentDirection);
+    if (this.currentAbility == 1) {
+      //this.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_DOWN,false);
+    } else if (this.currentAbility == 2){
+      //this.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_LEFT,false);
     }
   }
 }
@@ -69,6 +121,8 @@ import IdleRight from "./PlayerIdle/IdleRight";
 import IdleUp from "./PlayerIdle/IdleUp";
 
 import PlayerActor from "../../../Actors/PlayerActor";
+import Vec2 from "../../../../Wolfie2D/DataTypes/Vec2";
+import DirectPathStrat from "../../../../Wolfie2D/Pathfinding/Strategies/DirectStrategy";
 
 export {
   Idle,
