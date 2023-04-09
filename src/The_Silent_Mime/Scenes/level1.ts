@@ -45,11 +45,12 @@ export default class level1 extends Scene {
    */
   public override loadScene() {
     this.load.spritesheet("player1", "project_assets/spritesheets/mime.json");
-    this.load.tilemap("level", "project_assets/tilesheets/test128.json");
+    this.load.spritesheet("guard", "project_assets/spritesheets/guards.json");
     this.load.spritesheet(
       "treasure",
       "project_assets/spritesheets/treasure.json"
     );
+    this.load.tilemap("level", "project_assets/tilesheets/test128.json");
   }
   /**
    * @see Scene.startScene
@@ -63,7 +64,7 @@ export default class level1 extends Scene {
     let tilemapSize: Vec2 = this.walls.size;
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-    this.viewport.setZoomLevel(5);
+    this.viewport.setZoomLevel(3);
 
     this.initLayer();
     this.initializePlayer();
@@ -79,7 +80,7 @@ export default class level1 extends Scene {
     }
 
     // console.log(this.guard.positionX);
-    this.guard._velocity.x += 10;
+    //this.guard._velocity.x += 10;
   }
 
   /**
@@ -95,7 +96,7 @@ export default class level1 extends Scene {
   public initializePlayer() {
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
     player.position.set(170, 120);
-    player.scale.set(0.5, 0.5);
+    player.scale.set(1.0, 1.0);
     player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
     player.addAI(PlayerAI);
     player.animation.play("IDLE");
@@ -103,15 +104,15 @@ export default class level1 extends Scene {
     this.viewport.follow(player);
   }
   public initializeGuards() {
-    let guard1 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    let guard1 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard1.position.set(525, 675);
-    guard1.scale.set(0.5, 0.5);
+    guard1.scale.set(1.0, 1.0);
     guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)));
     guard1.addAI(GuardAI);
     guard1.animation.play("IDLE");
     this.guard = guard1;
 
-    let guard2 = this.add.animatedSprite(GuardActor, "player1", "primary");
+    let guard2 = this.add.animatedSprite(GuardActor, "guard", "primary");
     guard2.position.set(525, 275);
     guard2.scale.set(0.5, 0.5);
     guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
@@ -122,7 +123,7 @@ export default class level1 extends Scene {
   public initializeTreasure() {
     let treasure = this.add.animatedSprite(GuardActor, "treasure", "primary");
     treasure.position.set(525, 475);
-    treasure.scale.set(0.75, 0.75);
+    treasure.scale.set(0.5, 0.5);
     treasure.animation.play("SPIN");
   }
 }

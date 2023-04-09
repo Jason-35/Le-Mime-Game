@@ -23,15 +23,8 @@ export default class PlayerController {
    */
   public get moveDir(): Vec2 {
     let dir: Vec2 = Vec2.ZERO;
-    if (Input.isPressed(PlayerInput.MOVE_DOWN)) {
-      dir.y = 1;
-    } else if (Input.isPressed(PlayerInput.MOVE_UP)) {
-      dir.y = -1;
-    } else if (Input.isPressed(PlayerInput.MOVE_LEFT)) {
-      dir.x = -1;
-    } else if (Input.isPressed(PlayerInput.MOVE_RIGHT)) {
-      dir.x = 1;
-    }
+    dir.y = (Input.isPressed(PlayerInput.MOVE_UP) ? -1 : 0) + (Input.isPressed(PlayerInput.MOVE_DOWN) ? 1 : 0);
+		dir.x = (Input.isPressed(PlayerInput.MOVE_LEFT) ? -1 : 0) + (Input.isPressed(PlayerInput.MOVE_RIGHT) ? 1 : 0);
     return dir.normalize();
   }
 }
