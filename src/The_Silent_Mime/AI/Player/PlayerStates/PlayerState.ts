@@ -26,13 +26,25 @@ export enum PlayerAnimationType {
   MOVING_UP = "MOVING_UP",
   MOVING_DOWN = "MOVING_DOWN",
   MOVING_RIGHT = "MOVING_RIGHT",
+  
+  WHIP_LEFT = "WHIPE_LEFT",
+  WHIP_RIGHT = "WHIPE_RIGHT",
+  WHIP_DOWN = "WHIPE_DOWN",
+  WHIP_UP = "WHIPE_UP",
+
+  BARRIER_DOWN = "BARRIER_DOWN",
+  BARRIER_UP = "BARRIER_UP",
+  BARRIER_RIGHT = "BARRIER_RIGHT",
+  BARRIER_LEFT = "BARRIER_LEFT",
+
+  CAMO = "CAMO"
 }
 
 enum DIRECTIONS {
   LEFT = 0,
   UP = 1,
-  DOWN = 2,
-  RIGHT = 3
+  RIGHT = 2,
+  DOWN = 3
 }
 
 export default class PlayerState extends State {
@@ -60,19 +72,27 @@ export default class PlayerState extends State {
     // Move the player
     let direction =this.parent.controller.moveDir;
     this.parent.owner.move(direction);
-    
-    if (direction.mag() != 0) {
-      if (direction.x  == -1)
+
+    this.currentDirection = this.currentDirection;
+    if (!(direction.x == 0 && direction.y == 0)) {
+      if (direction.x  == -1){
         this.currentDirection = DIRECTIONS.LEFT;
-      else if (direction.x == 1) 
+        console.log("set left");
+      }
+      else if (direction.x == 1) {
         this.currentDirection = DIRECTIONS.RIGHT;
+        console.log("set right");
+      }
       else if (direction.y == 1) {
         this.currentDirection = DIRECTIONS.DOWN;
+        console.log("set down")
       } else if (direction.y == -1) {
         this.currentDirection = DIRECTIONS.UP;
+        console.log("set up");
       }
-      console.log("current direction is", this.currentDirection);
-    }
+      
+    } 
+    console.log("curr dir: ",this.currentDirection);
     this.handleAbilityInput();
   }
 
@@ -100,12 +120,14 @@ export default class PlayerState extends State {
 
   private executeAbility() {
     //this.owner.animation.play(PlayerAnimationType.MOVING_UP,false);
-    console.log("current direction is",this.currentDirection);
-    if (this.currentAbility == 1) {
-      //this.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_DOWN,false);
+    console.log("dir:",this.currentDirection," ability:",this.currentAbility);
+    this.owner.animation.play(PlayerAnimationType.WHIP_UP,false);
+    
+    /*if (this.currentAbility == 1) {
+      this.owner.animation.play([PlayerAnimationType.BARRIER_LEFT,PlayerAnimationType.BARRIER_UP,PlayerAnimationType.BARRIER_RIGHT,PlayerAnimationType.BARRIER_DOWN][this.currentDirection],false);
     } else if (this.currentAbility == 2){
-      //this.owner.animation.playIfNotAlready(PlayerAnimationType.MOVING_LEFT,false);
-    }
+      this.owner.animation.play([PlayerAnimationType.WHIP_LEFT,PlayerAnimationType.WHIP_UP,PlayerAnimationType.WHIP_DOWN,PlayerAnimationType.WHIP_RIGHT][this.currentDirection],false);
+    }*/
   }
 }
 
