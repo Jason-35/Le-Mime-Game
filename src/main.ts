@@ -17,11 +17,12 @@ import { PlayerInput } from "./The_Silent_Mime/AI/Player/PlayerController";
       { name: PlayerInput.MOVE_DOWN, keys: ["s"] },
       { name: PlayerInput.MOVE_LEFT, keys: ["a"] },
       { name: PlayerInput.MOVE_RIGHT, keys: ["d"] },
-      { name: PlayerInput.USE_ABILITY, keys:["q"]},
-      { name: PlayerInput.SET_ABILITY_1, keys:["1"]},
-      { name: PlayerInput.SET_ABILITY_2, keys:["2"]},
-      { name: PlayerInput.SET_ABILITY_3, keys:["3"]},
-      { name: PlayerInput.SET_ABILITY_4, keys:["4"]}
+      { name: PlayerInput.USE_ABILITY, keys: ["q"] },
+      { name: PlayerInput.SET_ABILITY_1, keys: ["1"] },
+      { name: PlayerInput.SET_ABILITY_2, keys: ["2"] },
+      { name: PlayerInput.SET_ABILITY_3, keys: ["3"] },
+      { name: PlayerInput.SET_ABILITY_4, keys: ["4"] },
+      { name: PlayerInput.PAUSE, keys: ["o"] },
     ],
     useWebGL: false, // Tell the game we want to use webgl
     showDebug: false, // Whether to show debug messages. You can change this to true if you want

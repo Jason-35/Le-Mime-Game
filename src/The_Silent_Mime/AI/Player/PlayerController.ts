@@ -12,7 +12,9 @@ export enum PlayerInput {
   SET_ABILITY_1 = "SET_ABILITY_1",
   SET_ABILITY_2 = "SET_ABILITY_2",
   SET_ABILITY_3 = "SET_ABILITY_3",
-  SET_ABILITY_4 = "SET_ABILITY_4"
+  SET_ABILITY_4 = "SET_ABILITY_4",
+
+  PAUSE = "PAUSE",
 }
 
 export default class PlayerController {
@@ -46,14 +48,10 @@ export default class PlayerController {
   }
 
   public get currentAbility(): Number {
-    if (Input.isPressed(PlayerInput.SET_ABILITY_1))
-      return 1;
-    else if (Input.isPressed(PlayerInput.SET_ABILITY_2))
-      return 2;
-    else if (Input.isPressed(PlayerInput.SET_ABILITY_3))
-      return 3
-    else if (Input.isPressed(PlayerInput.SET_ABILITY_4))
-      return 4;
+    if (Input.isPressed(PlayerInput.SET_ABILITY_1)) return 1;
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_2)) return 2;
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_3)) return 3;
+    else if (Input.isPressed(PlayerInput.SET_ABILITY_4)) return 4;
     return -1;
   }
 }

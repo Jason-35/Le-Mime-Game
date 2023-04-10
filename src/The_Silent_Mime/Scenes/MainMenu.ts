@@ -82,14 +82,14 @@ export default class MainMenu extends Scene {
     this.controlLayer.setHidden(true);
     this.cl = this.add.sprite("wasd", "controllayer");
     this.cl.scale.set(5, 5);
-    this.cl.position = new Vec2(center.x, center.y - 350);
+    this.cl.position = new Vec2(center.x, center.y - 275);
 
     // add help bag logo layer and add to top
     this.helpLayer = this.addLayer("helplayer", 1);
     this.helpLayer.setHidden(true);
     this.hl = this.add.sprite("bag", "helplayer");
     this.hl.scale.set(8, 5);
-    this.hl.position = new Vec2(center.x, center.y - 350);
+    this.hl.position = new Vec2(center.x, center.y - 325);
 
     // add the level select buttton
     const selectBtn = this.add.uiElement(UIElementType.BUTTON, "background", {
@@ -165,6 +165,61 @@ export default class MainMenu extends Scene {
 
     // control texts
     const ctrlText1 = "WASD to move around";
+    const ctrlText2 = "1 (barrier) blocks guards 2 3 to select abilities";
+    const ctrlText3 = "2 (Whip) hits guard to stun them";
+    const ctrlText4 = "3 (Camoflage) disguise as a clock to avoid detection";
+    const ctrlText5 = "press q to use abilities";
+
+    const ctrlLine1 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y - 75),
+        text: ctrlText1,
+      }
+    );
+
+    const ctrlLine2 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y - 25),
+        text: ctrlText2,
+      }
+    );
+
+    const ctrlLine3 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y + 25),
+        text: ctrlText3,
+      }
+    );
+
+    const ctrlLine4 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y + 75),
+        text: ctrlText4,
+      }
+    );
+
+    const ctrlLine5 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y + 125),
+        text: ctrlText5,
+      }
+    );
+
+    ctrlLine1.textColor = Color.WHITE;
+    ctrlLine2.textColor = Color.WHITE;
+    ctrlLine3.textColor = Color.WHITE;
+    ctrlLine4.textColor = Color.WHITE;
+    ctrlLine5.textColor = Color.WHITE;
 
     // About texts
     const abtText1 =

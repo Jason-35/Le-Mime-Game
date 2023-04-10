@@ -22,7 +22,7 @@ import Graphic from "../../Wolfie2D/Nodes/Graphic";
 import Layer from "../../Wolfie2D/Scene/Layer";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
-import AbilityHud from "../Actors/AbilityHUD";
+import AbilityHUD from "../Actors/AbilityHud";
 import Input from "../../Wolfie2D/Input/Input";
 
 export default class level1 extends Scene {
@@ -99,16 +99,14 @@ export default class level1 extends Scene {
       this.viewport.getCenter().x - 200,
       this.viewport.getCenter().y - 100
     );
-    
-    if (Input.isKeyPressed("1")){
+
+    if (Input.isKeyPressed("1")) {
       this.al.animation.play("ABILITY1");
-    } else if (Input.isKeyPressed("2")){
-    this.al.animation.play("ABILITY2");
-    }else if (Input.isKeyPressed("3")){
+    } else if (Input.isKeyPressed("2")) {
+      this.al.animation.play("ABILITY2");
+    } else if (Input.isKeyPressed("3")) {
       this.al.animation.play("ABILITY3");
-      }
-    // console.log(this.guard.positionX);
-    //this.guard._velocity.x += 10;
+    }
   }
 
   /**
@@ -122,18 +120,15 @@ export default class level1 extends Scene {
   }
 
   public initializeAbilityHUD() {
-    const center = this.viewport.getCenter();
     this.AbilityLayer = this.addLayer("abilitylayer", 11);
     this.AbilityLayer.setHidden(false);
     this.al = this.add.animatedSprite(
-      AbilityHud,
+      AbilityHUD,
       "Ability_HUD",
       "abilitylayer"
     );
     this.al.scale.set(2, 2);
     this.al.position.set(this.player.position.x, this.player.position.y);
-    // this.al.position.toFixed;
-    // console.log(this.player.position.x)
   }
 
   public initializePlayer() {
