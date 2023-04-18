@@ -40,7 +40,7 @@ export default class PlayerController {
     } else if (Input.isPressed(PlayerInput.MOVE_RIGHT)) {
       dir.x = 1;
     }
-    return dir.normalize();
+    return dir;
   }
 
   public get abilityKey(): Boolean {

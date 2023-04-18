@@ -22,7 +22,7 @@ import { PlayerInput } from "./The_Silent_Mime/AI/Player/PlayerController";
       { name: PlayerInput.SET_ABILITY_2, keys: ["2"] },
       { name: PlayerInput.SET_ABILITY_3, keys: ["3"] },
       { name: PlayerInput.SET_ABILITY_4, keys: ["4"] },
-      { name: PlayerInput.PAUSE, keys: ["o"] },
+      { name: PlayerInput.PAUSE, keys: ["escape"] },
     ],
     useWebGL: false, // Tell the game we want to use webgl
     showDebug: false, // Whether to show debug messages. You can change this to true if you want
