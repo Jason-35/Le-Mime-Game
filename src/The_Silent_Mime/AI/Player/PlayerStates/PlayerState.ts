@@ -60,7 +60,7 @@ export default class PlayerState extends State {
     this.owner = owner;
     this.pressedAbilityKey = false;
     this.activeAbility = 1;
-    console.log("constuctor set");
+    // console.log("constuctor set");
     this.currentDirection = DIRECTIONS.DOWN;
   }
 
@@ -137,9 +137,9 @@ export default class PlayerState extends State {
   private handleAbilityInput() {
     if (this.parent.controller.currentAbility != -1) {
       this.activeAbility = this.parent.controller.currentAbility;
-      console.log("updated current ability");
+      // console.log("updated current ability");
     }
-    console.log("current ability", this.activeAbility);
+    // console.log("current ability", this.activeAbility);
     // console.log(this.currentAbility,this.parent.controller.currentAbility);
     if (!this.parent.controller.abilityKey) this.pressedAbilityKey = false;
 

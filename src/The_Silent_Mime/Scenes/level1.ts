@@ -24,6 +24,7 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import AbilityHUD from "../Actors/AbilityHud";
 import Input from "../../Wolfie2D/Input/Input";
+import AstarStrategy from "../PathFinding/AstarStrategy";
 
 export default class level1 extends Scene {
   /** All the battlers in the HW4Scene (including the player) */
@@ -37,7 +38,6 @@ export default class level1 extends Scene {
   private graph: PositionGraph;
   private guard: GuardActor;
 
-  private mimeWall: Graphic;
   private AbilityLayer: Layer;
   private al: AnimatedSprite;
 
@@ -81,10 +81,10 @@ export default class level1 extends Scene {
     this.viewport.setZoomLevel(3);
 
     this.initLayer();
+    this.initializeNavmesh();
     this.initializePlayer();
     this.initializeGuards();
     this.initializeTreasure();
-    this.initializeMimeWalls();
     this.initializeAbilityHUD();
   }
   /**
@@ -106,6 +106,9 @@ export default class level1 extends Scene {
     } else if (Input.isKeyPressed("3")) {
       this.al.animation.play("ABILITY3");
     }
+
+    // console.log(this.guard.position);
+    // console.log(this.player.position);
   }
 
   /**
@@ -142,19 +145,38 @@ export default class level1 extends Scene {
   }
   public initializeGuards() {
     let guard1 = this.add.animatedSprite(GuardActor, "guard", "primary");
-    guard1.position.set(350, 675);
+    guard1.position.set(350, 676);
     guard1.scale.set(0.75, 0.75);
     guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
-    guard1.addAI(GuardAI);
+    let guard1PatrolPath = [];
+    guard1PatrolPath.push(new Vec2(700, 676));
+    guard1PatrolPath.push(new Vec2(700, 276));
+    guard1PatrolPath.push(new Vec2(350, 276));
+    guard1PatrolPath.push(new Vec2(350, 676));
+    guard1.navkey = "navmesh";
+    guard1.addAI(GuardAI, {
+      target: this.player,
+      patrolPath: guard1PatrolPath,
+    });
+
     guard1.animation.play("IDLE");
     this.guard = guard1;
 
-    let guard2 = this.add.animatedSprite(GuardActor, "guard", "primary");
-    guard2.position.set(675, 275);
-    guard2.scale.set(0.75, 0.75);
-    guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
-    guard2.addAI(GuardAI);
-    guard2.animation.play("IDLE");
+    // let guard2 = this.add.animatedSprite(GuardActor, "guard", "primary");
+    // guard2.position.set(676, 276);
+    // guard2.scale.set(0.75, 0.75);
+    // guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
+    // let guard2PatrolPath = [];
+    // guard2PatrolPath.push(new Vec2(350, 276));
+    // guard2PatrolPath.push(new Vec2(350, 676));
+    // guard2PatrolPath.push(new Vec2(676, 676));
+    // guard2PatrolPath.push(new Vec2(676, 276));
+    // guard2.addAI(GuardAI, {
+    //   target: 32,
+    //   range: 55,
+    //   patrolPath: guard2PatrolPath,
+    // });
+    // guard2.animation.play("IDLE");
   }
 
   public initializeTreasure() {
@@ -164,7 +186,93 @@ export default class level1 extends Scene {
     treasure.animation.play("SPIN");
   }
 
-  public initializeMimeWalls() {
-    return;
+  public checkGuardRange(GuardRange, PlayerPosition) {
+    // const protectedGuardRangeY = GuardRange.x
+    const protectedGuardRangeX = GuardRange.x;
+    if (
+      protectedGuardRangeX - 25 < PlayerPosition.x &&
+      protectedGuardRangeX + 25 > PlayerPosition.x
+    ) {
+      console.log("detected player");
+    }
+  }
+
+  protected initializeNavmesh(): void {
+    // Create the graph
+    this.graph = new PositionGraph();
+
+    let dim: Vec2 = this.walls.getDimensions();
+    for (let i = 0; i < dim.y; i++) {
+      for (let j = 0; j < dim.x; j++) {
+        let tile: AABB = this.walls.getTileCollider(j, i);
+        this.graph.addPositionedNode(tile.center);
+      }
+    }
+
+    let rc: Vec2;
+    for (let i = 0; i < this.graph.numVertices; i++) {
+      rc = this.walls.getTileColRow(i);
+      if (
+        !this.walls.isTileCollidable(rc.x, rc.y) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x - 1, 0, dim.x - 1),
+          rc.y
+        ) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x + 1, 0, dim.x - 1),
+          rc.y
+        ) &&
+        !this.walls.isTileCollidable(
+          rc.x,
+          MathUtils.clamp(rc.y - 1, 0, dim.y - 1)
+        ) &&
+        !this.walls.isTileCollidable(
+          rc.x,
+          MathUtils.clamp(rc.y + 1, 0, dim.y - 1)
+        ) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x + 1, 0, dim.x - 1),
+          MathUtils.clamp(rc.y + 1, 0, dim.y - 1)
+        ) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x - 1, 0, dim.x - 1),
+          MathUtils.clamp(rc.y + 1, 0, dim.y - 1)
+        ) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x + 1, 0, dim.x - 1),
+          MathUtils.clamp(rc.y - 1, 0, dim.y - 1)
+        ) &&
+        !this.walls.isTileCollidable(
+          MathUtils.clamp(rc.x - 1, 0, dim.x - 1),
+          MathUtils.clamp(rc.y - 1, 0, dim.y - 1)
+        )
+      ) {
+        // Create edge to the left
+        rc = this.walls.getTileColRow(i + 1);
+        if ((i + 1) % dim.x !== 0 && !this.walls.isTileCollidable(rc.x, rc.y)) {
+          this.graph.addEdge(i, i + 1);
+          // this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(i), end: this.graph.getNodePosition(i + 1)})
+        }
+        // Create edge below
+        rc = this.walls.getTileColRow(i + dim.x);
+        if (
+          i + dim.x < this.graph.numVertices &&
+          !this.walls.isTileCollidable(rc.x, rc.y)
+        ) {
+          this.graph.addEdge(i, i + dim.x);
+          // this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(i), end: this.graph.getNodePosition(i + dim.x)})
+        }
+      }
+    }
+
+    // Set this graph as a navigable entity
+    let navmesh = new Navmesh(this.graph);
+    // Add different strategies to use for this navmesh
+    navmesh.registerStrategy("astar", new AstarStrategy(navmesh));
+    // Select A* as our navigation strategy
+    navmesh.setStrategy("astar");
+
+    // Add this navmesh to the navigation manager
+    this.navManager.addNavigableEntity("navmesh", navmesh);
   }
 }
