@@ -61,7 +61,6 @@ export default class level1 extends Scene {
       "treasure",
       "project_assets/spritesheets/treasure.json"
     );
-    this.load.tilemap("level", "project_assets/tilesheets/test128.json");
     this.load.spritesheet(
       "Ability_HUD",
       "project_assets/spritesheets/abilityHUD.json"
