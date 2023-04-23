@@ -3,6 +3,7 @@ import Actor from "../../Wolfie2D/DataTypes/Interfaces/Actor";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../Wolfie2D/Nodes/Graphics/Line";
@@ -41,6 +42,9 @@ export default class level1 extends Scene {
   private AbilityLayer: Layer;
   private al: AnimatedSprite;
 
+  public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
+  public static readonly LEVEL_MUSIC_PATH = "project_assets/music/Game_Music.mp3";
+
   public constructor(
     viewport: Viewport,
     sceneManager: SceneManager,
@@ -65,6 +69,7 @@ export default class level1 extends Scene {
       "Ability_HUD",
       "project_assets/spritesheets/abilityHUD.json"
     );
+    this.load.audio(level1.LEVEL_MUSIC_KEY, level1.LEVEL_MUSIC_PATH);
   }
   /**
    * @see Scene.startScene
@@ -77,6 +82,8 @@ export default class level1 extends Scene {
     // Set the viewport bounds to the tilemap
     let tilemapSize: Vec2 = this.walls.size;
 
+    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: level1.LEVEL_MUSIC_KEY, loop: true, holdReference: true});
+
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
     this.viewport.setZoomLevel(3);
 
@@ -86,6 +93,10 @@ export default class level1 extends Scene {
     this.initializeGuards();
     this.initializeTreasure();
     this.initializeAbilityHUD();
+  }
+
+  public override unloadScene(): void {
+    this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: level1.LEVEL_MUSIC_KEY, loop: true, holdReference: true})
   }
   /**
    * @see Scene.updateScene
