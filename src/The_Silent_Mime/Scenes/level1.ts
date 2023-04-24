@@ -117,7 +117,9 @@ export default class level1 extends Scene {
     );
 
     if (Input.isKeyPressed("1")) {
-      this.al.animation.play("ABILITY1");
+      //this.al.animation.play("ABILITY1");
+      this.player.position.x = this.player._velocity.x * 5 + this.player.position.x;
+      this.player.position.y = this.player._velocity.y * 5 + this.player.position.y;
     } else if (Input.isKeyPressed("2")) {
       this.al.animation.play("ABILITY2");
     } else if (Input.isKeyPressed("3")) {
