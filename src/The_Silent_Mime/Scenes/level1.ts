@@ -39,6 +39,8 @@ export default class level1 extends Scene {
   private graph: PositionGraph;
   private guard: GuardActor;
 
+  private treasure: AnimatedSprite;
+
   private AbilityLayer: Layer;
   private al: AnimatedSprite;
 
@@ -93,6 +95,10 @@ export default class level1 extends Scene {
     this.initializeGuards();
     this.initializeTreasure();
     this.initializeAbilityHUD();
+
+    console.log("Player: " + this.player.position);
+    console.log("Treasure: " + this.treasure.position);
+    console.log("Treasure Scale: " + this.treasure.scale);
   }
 
   public override unloadScene(): void {
@@ -116,6 +122,14 @@ export default class level1 extends Scene {
       this.al.animation.play("ABILITY2");
     } else if (Input.isKeyPressed("3")) {
       this.al.animation.play("ABILITY3");
+    }
+
+    if ((this.player.position.x > this.treasure.position.x - this.treasure.boundary.getHalfSize().x &&
+      this.player.position.x < this.treasure.position.x + this.treasure.boundary.getHalfSize().x) && (
+        this.player.position.y > this.treasure.position.y - this.treasure.boundary.getHalfSize().y &&
+        this.player.position.y < this.treasure.position.y + this.treasure.boundary.getHalfSize().y)
+      ) {
+        this.remove(this.treasure);
     }
 
     // console.log(this.guard.position);
@@ -191,18 +205,18 @@ export default class level1 extends Scene {
   }
 
   public initializeTreasure() {
-    let treasure = this.add.animatedSprite(GuardActor, "treasure", "primary");
-    treasure.position.set(525, 475);
-    treasure.scale.set(0.45, 0.45);
-    treasure.animation.play("SPIN");
+    this.treasure = this.add.animatedSprite(GuardActor, "treasure", "primary");
+    this.treasure.position.set(525, 475);
+    this.treasure.scale.set(0.45, 0.45);
+    this.treasure.animation.play("SPIN");
   }
 
   public checkGuardRange(GuardRange, PlayerPosition) {
     // const protectedGuardRangeY = GuardRange.x
     const protectedGuardRangeX = GuardRange.x;
     if (
-      protectedGuardRangeX - 25 < PlayerPosition.x &&
-      protectedGuardRangeX + 25 > PlayerPosition.x
+      protectedGuardRangeX - 35 < PlayerPosition.x &&
+      protectedGuardRangeX + 35 > PlayerPosition.x
     ) {
       console.log("detected player");
     }
