@@ -26,6 +26,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import AbilityHUD from "../Actors/AbilityHud";
 import Input from "../../Wolfie2D/Input/Input";
 import AstarStrategy from "../PathFinding/AstarStrategy";
+import Timer from "../../Wolfie2D/Timing/Timer";
 
 export default class level1 extends Scene {
   /** All the battlers in the HW4Scene (including the player) */
@@ -40,12 +41,18 @@ export default class level1 extends Scene {
   private guard: GuardActor;
 
   private treasure: AnimatedSprite;
+  private treasureTaken: boolean;
 
   private AbilityLayer: Layer;
   private al: AnimatedSprite;
 
+  private canDash: boolean;
+
   public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
   public static readonly LEVEL_MUSIC_PATH = "project_assets/music/Game_Music.mp3";
+
+  public static readonly TREASURE_PICKUP_KEY = "PICKUP_SOUND";
+  public static readonly TREASURE_PICKUP_PATH = "project_assets/sounds/pickup_sound.wav";
 
   public constructor(
     viewport: Viewport,
@@ -72,6 +79,10 @@ export default class level1 extends Scene {
       "project_assets/spritesheets/abilityHUD.json"
     );
     this.load.audio(level1.LEVEL_MUSIC_KEY, level1.LEVEL_MUSIC_PATH);
+    this.load.audio(level1.TREASURE_PICKUP_KEY, level1.TREASURE_PICKUP_PATH);
+
+    this.treasureTaken = false;
+    this.canDash = true;
   }
   /**
    * @see Scene.startScene
@@ -84,7 +95,7 @@ export default class level1 extends Scene {
     // Set the viewport bounds to the tilemap
     let tilemapSize: Vec2 = this.walls.size;
 
-    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: level1.LEVEL_MUSIC_KEY, loop: true, holdReference: true});
+    this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: level1.LEVEL_MUSIC_KEY, loop: true, holdReference: true});
 
     this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
     this.viewport.setZoomLevel(3);
@@ -95,10 +106,6 @@ export default class level1 extends Scene {
     this.initializeGuards();
     this.initializeTreasure();
     this.initializeAbilityHUD();
-
-    console.log("Player: " + this.player.position);
-    console.log("Treasure: " + this.treasure.position);
-    console.log("Treasure Scale: " + this.treasure.scale);
   }
 
   public override unloadScene(): void {
@@ -116,10 +123,8 @@ export default class level1 extends Scene {
       this.viewport.getCenter().y - 100
     );
 
-    if (Input.isKeyPressed("1")) {
-      //this.al.animation.play("ABILITY1");
-      this.player.position.x = this.player._velocity.x * 5 + this.player.position.x;
-      this.player.position.y = this.player._velocity.y * 5 + this.player.position.y;
+    if (this.canDash && Input.isKeyPressed("1")) {
+      this.startDash();
     } else if (Input.isKeyPressed("2")) {
       this.al.animation.play("ABILITY2");
     } else if (Input.isKeyPressed("3")) {
@@ -129,13 +134,32 @@ export default class level1 extends Scene {
     if ((this.player.position.x > this.treasure.position.x - this.treasure.boundary.getHalfSize().x &&
       this.player.position.x < this.treasure.position.x + this.treasure.boundary.getHalfSize().x) && (
         this.player.position.y > this.treasure.position.y - this.treasure.boundary.getHalfSize().y &&
-        this.player.position.y < this.treasure.position.y + this.treasure.boundary.getHalfSize().y)
+        this.player.position.y < this.treasure.position.y + this.treasure.boundary.getHalfSize().y) &&
+        !this.treasureTaken
       ) {
+        this.treasureTaken = true;
         this.remove(this.treasure);
-    }
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: level1.TREASURE_PICKUP_KEY, loop: false, holdReference: true});
+      }
+  }
 
-    // console.log(this.guard.position);
-    // console.log(this.player.position);
+  private startDash() {
+    const rechargeTimer: Timer = new Timer(5000, () => {
+      this.canDash = true;
+      console.log("Recharged");
+    }, false);
+
+    const dashTimer: Timer = new Timer(100, () => {
+      this.canDash = false;
+      rechargeTimer.start();
+    }, false);
+
+    dashTimer.start();
+
+    if (this.canDash) {
+      this.player.position.x = this.player._velocity.x * 10 + this.player.position.x;
+      this.player.position.y = this.player._velocity.y * 10 + this.player.position.y;
+    }
   }
 
   /**
