@@ -171,6 +171,7 @@ export default class MainMenu extends Scene {
     const ctrlText3 = "j to disguise as a guard";
     const ctrlText4 = "k to turn invisible";
     const ctrlText5 = "esc to pause";
+    const ctrlText6 = "p to enable cheats";
 
     const ctrlLine1 = <Label>this.add.uiElement(
       UIElementType.LABEL,
@@ -217,11 +218,21 @@ export default class MainMenu extends Scene {
       }
     );
 
+    const ctrlLine6 = <Label>this.add.uiElement(
+      UIElementType.LABEL,
+      "controllayer",
+      {
+        position: new Vec2(center.x, center.y + 175),
+        text: ctrlText6,
+      }
+    );
+
     ctrlLine1.textColor = Color.WHITE;
     ctrlLine2.textColor = Color.WHITE;
     ctrlLine3.textColor = Color.WHITE;
     ctrlLine4.textColor = Color.WHITE;
     ctrlLine5.textColor = Color.WHITE;
+    ctrlLine6.textColor = Color.WHITE;
 
     // About texts
     const abtText1 =
