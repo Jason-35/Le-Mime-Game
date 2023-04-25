@@ -5,9 +5,6 @@ import { PlayerInput } from "./The_Silent_Mime/AI/Player/PlayerController";
 (function main() {
   // Run any tests
   runTests();
-(function main() {
-  // Run any tests
-  runTests();
 
   // Set up options for our game
   let options = {

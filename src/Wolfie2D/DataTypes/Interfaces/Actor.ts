@@ -44,11 +44,8 @@ export default interface Actor {
    * @param path The path we're moving along
    */
   moveOnPath(speed: number, path: NavigationPath, owner): void;
-<<<<<<< HEAD
 
   guardMoveOnPath(speed: number, path: NavigationPath, owner): void;
 
   detectiveMoveOnPath(speed: number, path: NavigationPath, owner): void;
-=======
->>>>>>> 7106fa920dadf71748d39a1a4b858fe73fb4bbd2
 }
