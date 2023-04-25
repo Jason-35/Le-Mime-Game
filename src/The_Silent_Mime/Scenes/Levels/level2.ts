@@ -29,9 +29,8 @@ import StationaryGuardActor from "../../Actors/StationaryGuardActor";
 import TreasureActor from "../../Actors/TreasureActor";
 import AstarStrategy from "../../PathFinding/AstarStrategy";
 import MainMenu from "../MainMenu";
-import level2 from "./level2";
 
-export default class level1 extends Scene {
+export default class level2 extends Scene {
   private invisTimer: Timer;
   private walls: OrthogonalTilemap;
   private player: PlayerActor;
@@ -71,7 +70,7 @@ export default class level1 extends Scene {
   }
 
   public loadScene() {
-    this.load.tilemap("tilemap", "assets/tilesheets/level1.json");
+    this.load.tilemap("tilemap", "assets/tilesheets/level2.json");
     this.load.spritesheet("player", "assets/spritesheet/mime.json");
     this.load.spritesheet("guard", "assets/spritesheet/guards.json");
     this.load.spritesheet("detective", "assets/spritesheet/detective.json");
@@ -105,7 +104,7 @@ export default class level1 extends Scene {
     this.initalizeTreasure();
     this.initalizeGuards();
     // this.initalizeDetective();
-    // this.initalizeStationaryGuards();
+    this.initalizeStationaryGuards();
     this.initalizeGameOver();
 
     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {
@@ -235,12 +234,8 @@ export default class level1 extends Scene {
         break;
       }
       case "FINISH": {
-        // console.log("finish?");
-        // this.emitter.fireEvent("MAINMENU");
-        this.emitter.fireEvent(GameEventType.STOP_SOUND, {
-          key: "lv1",
-        });
-        this.sceneManager.changeToScene(level2);
+        console.log("finish?");
+        this.emitter.fireEvent("MAINMENU");
         break;
       }
       case "PICKUP": {
@@ -340,7 +335,7 @@ export default class level1 extends Scene {
       "primary"
     );
 
-    treasure.position.set(500, 500);
+    treasure.position.set(250, 250);
     treasure.scale.set(0.45, 0.45);
     treasure.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     treasure.addAI(TreasureAI, { target: this.player });
@@ -352,7 +347,7 @@ export default class level1 extends Scene {
       "primary"
     );
 
-    treasure2.position.set(350, 300);
+    treasure2.position.set(250, 780);
     treasure2.scale.set(0.45, 0.45);
     treasure2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     treasure2.addAI(TreasureAI, { target: this.player });
@@ -364,11 +359,23 @@ export default class level1 extends Scene {
       "primary"
     );
 
-    treasure3.position.set(700, 700);
+    treasure3.position.set(775, 780);
     treasure3.scale.set(0.45, 0.45);
     treasure3.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     treasure3.addAI(TreasureAI, { target: this.player });
     treasure3.animation.play("SPIN");
+
+    let treasure4 = this.add.animatedSprite(
+      TreasureActor,
+      "treasure",
+      "primary"
+    );
+
+    treasure4.position.set(775, 250);
+    treasure4.scale.set(0.45, 0.45);
+    treasure4.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
+    treasure4.addAI(TreasureAI, { target: this.player });
+    treasure4.animation.play("SPIN");
   }
 
   public initalizeStationaryGuards() {
@@ -378,7 +385,7 @@ export default class level1 extends Scene {
       "primary"
     );
 
-    stationaryGuard1.position.set(280, 455);
+    stationaryGuard1.position.set(195, 525);
     stationaryGuard1.scale.set(0.75, 0.75);
     stationaryGuard1.addPhysics(
       new AABB(Vec2.ZERO, new Vec2(7, 7)),
@@ -389,7 +396,7 @@ export default class level1 extends Scene {
     stationaryGuard1.navkey = "navmesh";
     stationaryGuard1.addAI(StationaryGuardAI, {
       target: this.player,
-      station: new Vec2(280, 455),
+      station: new Vec2(195, 525),
       range: 100,
     });
 
@@ -401,7 +408,7 @@ export default class level1 extends Scene {
       "primary"
     );
 
-    stationaryGuard2.position.set(750, 455);
+    stationaryGuard2.position.set(525, 210);
     stationaryGuard2.scale.set(0.75, 0.75);
     stationaryGuard2.addPhysics(
       new AABB(Vec2.ZERO, new Vec2(7, 7)),
@@ -412,7 +419,7 @@ export default class level1 extends Scene {
     stationaryGuard2.navkey = "navmesh";
     stationaryGuard2.addAI(StationaryGuardAI, {
       target: this.player,
-      station: new Vec2(750, 455),
+      station: new Vec2(525, 210),
       range: 100,
     });
 
@@ -421,15 +428,17 @@ export default class level1 extends Scene {
 
   public initalizeGuards() {
     let guard1 = this.add.animatedSprite(SpeedGuardActor, "guard", "primary");
-    guard1.position.set(350, 676);
+    guard1.position.set(350, 276);
     guard1.scale.set(0.75, 0.75);
     guard1.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     let guard1PatrolPath = [];
-    guard1PatrolPath.push(new Vec2(700, 676));
+    // guard1PatrolPath.push(new Vec2(700, 676));
+    guard1PatrolPath.push(new Vec2(350, 276));
+    guard1PatrolPath.push(new Vec2(350, 750));
+    guard1PatrolPath.push(new Vec2(700, 750));
     guard1PatrolPath.push(new Vec2(700, 276));
     guard1PatrolPath.push(new Vec2(350, 276));
-    guard1PatrolPath.push(new Vec2(350, 676));
-    guard1.startPosition = new Vec2(350, 676);
+    guard1.startPosition = new Vec2(350, 276);
     guard1.navkey = "navmesh";
     guard1.addAI(SpeedGuardAI, {
       target: this.player,
@@ -438,53 +447,22 @@ export default class level1 extends Scene {
     guard1.animation.play("IDLE");
 
     let guard2 = this.add.animatedSprite(SpeedGuardActor, "guard", "primary");
-    guard2.position.set(676, 276);
+    guard2.position.set(700, 750);
     guard2.scale.set(0.75, 0.75);
     guard2.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
     let guard2PatrolPath = [];
+    guard2PatrolPath.push(new Vec2(700, 750));
+    guard2PatrolPath.push(new Vec2(700, 276));
     guard2PatrolPath.push(new Vec2(350, 276));
-    guard2PatrolPath.push(new Vec2(350, 676));
-    guard2PatrolPath.push(new Vec2(676, 676));
-    guard2PatrolPath.push(new Vec2(676, 276));
-    guard2.startPosition = new Vec2(676, 276);
+    guard2PatrolPath.push(new Vec2(350, 750));
+    guard2PatrolPath.push(new Vec2(700, 750));
+    guard2.startPosition = new Vec2(700, 750);
     guard2.navkey = "navmesh";
     guard2.addAI(SpeedGuardAI, {
       target: this.player,
       patrolPath: guard2PatrolPath,
     });
     guard2.animation.play("IDLE");
-
-    let guard3 = this.add.animatedSprite(SpeedGuardActor, "guard", "primary");
-    guard3.position.set(200, 380);
-    guard3.scale.set(0.75, 0.75);
-    guard3.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
-    let guard3PatrolPath = [];
-
-    guard3PatrolPath.push(new Vec2(200, 580));
-    guard3PatrolPath.push(new Vec2(200, 380));
-    guard3.startPosition = new Vec2(200, 380);
-    guard3.navkey = "navmesh";
-    guard3.addAI(SpeedGuardAI, {
-      target: this.player,
-      patrolPath: guard3PatrolPath,
-    });
-    guard3.animation.play("IDLE");
-
-    let guard4 = this.add.animatedSprite(SpeedGuardActor, "guard", "primary");
-    guard4.position.set(850, 380);
-    guard4.scale.set(0.75, 0.75);
-    guard4.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
-    let guard4PatrolPath = [];
-
-    guard4PatrolPath.push(new Vec2(850, 580));
-    guard4PatrolPath.push(new Vec2(850, 380));
-    guard4.startPosition = new Vec2(850, 380);
-    guard4.navkey = "navmesh";
-    guard4.addAI(SpeedGuardAI, {
-      target: this.player,
-      patrolPath: guard4PatrolPath,
-    });
-    guard4.animation.play("IDLE");
   }
 
   public initalizeDetective() {
@@ -505,9 +483,9 @@ export default class level1 extends Scene {
 
   public initalizePlayer() {
     let player = this.add.animatedSprite(PlayerActor, "player", "primary");
-    player.needStealing = 3;
     player.position.set(170, 120);
     player.scale.set(0.75, 0.75);
+    player.needStealing = 4;
     player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
     player.addAI(PlayerAI);
     player.animation.play("IDLE");

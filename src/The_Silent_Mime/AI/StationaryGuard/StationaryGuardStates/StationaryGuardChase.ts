@@ -26,6 +26,7 @@ export default class StationaryGuardChase extends StationaryGuardState {
     }
 
     if (this.outOfStation(this.owner)) {
+      this.owner.returnToStation = true;
       this.finished(StationaryGuardStateType.STATION);
     }
 

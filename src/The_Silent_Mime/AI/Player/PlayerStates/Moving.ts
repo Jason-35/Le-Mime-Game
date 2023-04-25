@@ -22,7 +22,7 @@ export default class Moving extends PlayerState {
   public override update(deltaT: number): void {
     super.update(deltaT);
     if (this.owner.isColliding) {
-      this.emitter.fireEvent("COLLISIONSFX");
+      // this.emitter.fireEvent("COLLISIONSFX");
     }
     switch (this.parent.controller.currentDirection) {
       case 1: {

@@ -7,6 +7,7 @@ import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import level1 from "./Levels/level1";
+import level2 from "./Levels/level2";
 
 export default class MainMenu extends Scene {
   // Layers, for for main menu and selection options
@@ -401,7 +402,7 @@ export default class MainMenu extends Scene {
       }
 
       case "level2": {
-        console.log("level2 pressed");
+        this.sceneManager.changeToScene(level2);
         break;
       }
 

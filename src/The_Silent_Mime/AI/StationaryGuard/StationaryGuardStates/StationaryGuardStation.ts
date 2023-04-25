@@ -24,12 +24,15 @@ export default class StationaryGuardStation extends StationaryGuardState {
         this.owner.position.y != this.parent.station.y)
     ) {
       this.owner.detectiveMoveOnPath(50 * deltaT, this.path, this.owner);
+      this.owner.returnToStation = false;
     } else {
       this.owner.animation.playIfNotAlready(
         StationaryGuardAnimationType.IDLE_DOWN
       );
     }
-    this.inArea(this.owner, this.target);
+    if (!this.owner.returnToStation) {
+      this.inArea(this.owner, this.target);
+    }
   }
 
   inArea(owner: StationaryGuardActor, player: PlayerActor) {

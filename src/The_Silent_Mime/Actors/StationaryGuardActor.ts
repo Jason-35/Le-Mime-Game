@@ -5,10 +5,12 @@ import NavigationPath from "../../Wolfie2D/Pathfinding/NavigationPath";
 
 export default class StationaryGuardActor extends AnimatedSprite {
   protected _navkey: string;
+  protected _returnToStation: boolean;
 
   public constructor(sheet: Spritesheet) {
     super(sheet);
     this._navkey = "navkey";
+    this._returnToStation = false;
   }
 
   public get navkey(): string {
@@ -16,6 +18,13 @@ export default class StationaryGuardActor extends AnimatedSprite {
   }
   public set navkey(navkey: string) {
     this._navkey = navkey;
+  }
+
+  public get returnToStation(): boolean {
+    return this._returnToStation;
+  }
+  public set returnToStation(returnToStation: boolean) {
+    this._returnToStation = returnToStation;
   }
 
   getPath(to: Vec2, from: Vec2): NavigationPath {
