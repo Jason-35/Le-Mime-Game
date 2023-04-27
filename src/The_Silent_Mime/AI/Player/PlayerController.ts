@@ -34,13 +34,16 @@ export default class PlayerController {
     if (Input.isPressed(PlayerInput.MOVE_DOWN)) {
       dir.y = this.owner.speed;
       this._currentDirection = 1;
-    } else if (Input.isPressed(PlayerInput.MOVE_UP)) {
+    }
+    if (Input.isPressed(PlayerInput.MOVE_UP)) {
       dir.y = -this.owner.speed;
       this._currentDirection = 2;
-    } else if (Input.isPressed(PlayerInput.MOVE_LEFT)) {
+    }
+    if (Input.isPressed(PlayerInput.MOVE_LEFT)) {
       dir.x = -this.owner.speed;
       this._currentDirection = 3;
-    } else if (Input.isPressed(PlayerInput.MOVE_RIGHT)) {
+    }
+    if (Input.isPressed(PlayerInput.MOVE_RIGHT)) {
       dir.x = this.owner.speed;
       this._currentDirection = 4;
     }
